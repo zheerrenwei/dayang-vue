@@ -1,0 +1,103 @@
+/* button.css - 适配游客中心配色 */
+:root {
+    --primary-color: #3da9fc;
+    /* 主色调-菜单激活色 */
+    --gradient-blue: linear-gradient(135deg, #3da9fc 0%, #3498db 100%);
+    /* 匹配header渐变 */
+    --hover-blue: #42d2ef;
+    /* 悬停色 */
+    --text-dark: #2d2d29;
+    /* 主文字色 */
+    --background-light: #f8f9fa;
+    /* 页面背景色 */
+    --shadow-color: rgba(61, 169, 252, 0.2);
+    /* 统一阴影颜色 */
+}
+
+/* 基础按钮样式 */
+.el-button {
+    border-radius: 8px;
+    /* 与容器圆角统一 */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* 主要按钮-匹配header渐变 */
+.el-button--primary {
+    background-image: var(--gradient-blue);
+    border: none;
+    color: #fff;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.el-button--primary:hover {
+    background-image: linear-gradient(135deg, #42d2ef 0%, #3da9fc 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* 次要按钮-匹配aside背景 */
+.el-button--default {
+    background: #ffffff;
+    border: 1px solid #e3e9ef;
+    color: var(--text-dark);
+}
+
+.el-button--default:hover {
+    background: #f0f4f8;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+/* 成功按钮-使用蓝绿色系 */
+.el-button--success {
+    background-color: #4dc4b7;
+    border-color: #3da9a0;
+    color: #fff;
+}
+
+.el-button--success:hover {
+    background-color: #5fd4c7;
+    box-shadow: 0 2px 8px rgba(77, 196, 183, 0.3);
+}
+
+/* 危险按钮-保持对比度 */
+.el-button--danger {
+    background-color: #ff6b6b;
+    border-color: #ff5252;
+    color: #fff;
+}
+
+.el-button--danger:hover {
+    background-color: #ff7b7b;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+/* 文字按钮-使用主色调 */
+.el-button--text {
+    color: var(--primary-color);
+    padding: 8px 12px;
+}
+
+.el-button--text:hover {
+    color: #76c6ff;
+    background-color: rgba(61, 169, 252, 0.08);
+}
+
+/* 分页组件-匹配菜单风格 */
+.el-pagination.is-background {
+    --el-pagination-button-bg-color: #f0f4f8;
+    --el-pagination-button-color: var(--text-dark);
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled).active {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* 加载状态-颜色统一 */
+.el-button.is-loading:before {
+    background-color: rgba(255, 255, 255, 0.6);
+}
