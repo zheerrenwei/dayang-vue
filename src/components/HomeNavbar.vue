@@ -3,32 +3,46 @@
         <el-header class="header">
             <img src="../assets/logo.jpg" alt="标志" id="logo">
             <p id="p1">大阳古镇旅游网站</p>
-            <el-button size="medium" id="login" @click="$router.push('/userlogin')">
+            <el-button v-if="admin===null && user===null" size="medium" id="login" @click="$router.push('/userlogin')">
                 点击登录
             </el-button>
-            <img src="../assets/二维码.png" alt="QRCode" id="QRCode">
+            <img v-if="user !== null" src="../assets/用户.png" alt="用户" id="user" @click="$router.push('/user/update')"/>
+            <img v-if="admin !== null" src="../assets/管理员.png" alt="管理员" id="user" @click="$router.push('/admin/admin')"/>
+            <el-popover placement="left-end" :width="150" trigger="hover">
+                <template #reference>
+                    <img src="../assets/二维码 .png" alt="QRCode" id="QRCode">
+                </template>
+                <div style="text-align: center;">
+                    <p>扫描二维码关注公众号</p>
+                    <img src="../assets/公众号二维码.png" alt="QRCode" style="width: 100px; height: 100px;">
+                </div>
+            </el-popover>
+
             <el-row id="navigation">
-                <el-col :span="4">
-                    <p id="aa">首页</p>
+                <el-col :span="3">
+                    <p id="aa" @click="$router.push('/home')">首页</p>
                 </el-col>
-                <el-col :span="4">
-                    <p id="aa">景点</p>
+                <el-col :span="3">
+                    <p id="aa" @click="$router.push('/scenic')">景点</p>
                 </el-col>
-                <el-col :span="4">
-                    <p id="aa">门票</p>
+                <el-col :span="3">
+                    <p id="aa" @click="$router.push('/ticket')">门票</p>
                 </el-col>
-                <el-col :span="4">
-                    <p id="aa">酒店</p>
+                <el-col :span="3">
+                    <p id="aa" @click="$router.push('/hotel')">酒店</p>
                 </el-col>
-                <el-col :span="4">
-                    <p id="aa">公告</p>
+                <el-col :span="3">
+                    <p id="aa" @click="$router.push('/announcement')">公告</p>
                 </el-col>
-                <el-col :span="4">
-                    <p id="aa">关于我们</p>
+                <el-col :span="3">
+                    <p id="aa" @click="$router.push('/review')">留言</p>
+                </el-col>
+                <el-col :span="3">
+                    <p id="aa" @click="$router.push('/about')">关于我们</p>
                 </el-col>
             </el-row>
         </el-header>
-        <el-main>
+        <el-main class="main">
             <slot>
 
             </slot>
@@ -53,7 +67,15 @@
 </template>
 
 <script setup>
+import {useAdminStore} from '@/store/admin'
+import { useUserStore } from '@/store/user'
 
+const adminStore = useAdminStore()
+const userStore = useUserStore()
+
+// 检查用户是否已登录
+const admin = adminStore.adminId;
+const user = userStore.userId;
 </script>
 
 <style scoped>
@@ -120,6 +142,13 @@
         perspective(100px) rotateX(0deg) translateY(-2px);
 }
 
+#user {
+    width: 40px;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
 #navigation {
     width: 700px;
     height: 40px;
@@ -145,11 +174,17 @@
 }
 
 #QRCode {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     position: fixed;
     right: 30px;
-    top: 150px
+    top: 150px;
+    z-index: 1000;
+}
+
+.main {
+    min-height: 73vh;
+    height: auto;
 }
 
 .footer {

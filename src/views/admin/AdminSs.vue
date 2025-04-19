@@ -9,22 +9,29 @@
       <el-button type="primary" style="float: right" @click="showDialog = true">+添加景点</el-button>
     </div>
     <el-table :data="tableData" border style="width: 100%;margin-bottom:20px;height:420px">
-      <el-table-column prop="name" label="景点名称" width="125" />
-      <el-table-column prop="description" label="景点描述" width="140" />
-      <el-table-column prop="address" label="地址" width="125" />
-      <el-table-column prop="phone" label="电话号码" width="125" />
-      <el-table-column prop="openTime" label="开放时间" width="130" />
-      <el-table-column label="创建时间" width="130">
+      <el-table-column prop="name" label="景点名称" width="115" />
+      <el-table-column prop="description" label="景点描述" width="120">
+        <template #default="scope">
+          <el-tooltip :content="scope.row.description" placement="top">
+            <p class="multi-line-ellipsis">{{ scope.row.description }}</p>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="address" label="地址" width="120" />
+      <el-table-column prop="phone" label="电话号码" width="120" />
+      <el-table-column prop="openTime" label="开放时间" width="100" />
+      <el-table-column prop="link" label="具体链接" width="120" />
+      <el-table-column label="创建时间" width="115">
         <template #default="{ row }">
           {{ formatTime(row.createTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="更新时间" width="130">
+      <el-table-column label="更新时间" width="115">
         <template #default="{ row }">
           {{ formatTime(row.updateTime) }}
         </template>
       </el-table-column>
-      <el-table-column label="图片" width="130">
+      <el-table-column label="图片" width="120">
         <template #default="{ row }">
           <el-image :src="row.image" :preview-src-list="[row.image]" preview-teleported="true"
             style="width: 80px; height: 80px" />
@@ -32,10 +39,11 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="{ row }">
-          <el-button style="color: white;" type="success" size="30px"
-            @click="handleEdit(row.scenicId)">编辑</el-button>
-          <el-button style="color: white;" type="danger" size="30px"
-            @click="handleDelete(row.scenicId)">删除</el-button>
+          <el-button-group>
+            <el-button style="color: white;" type="success" size="30px" @click="handleEdit(row.scenicId)">编辑</el-button>
+            <el-button style="color: white;" type="danger" size="30px"
+              @click="handleDelete(row.scenicId)">删除</el-button>
+          </el-button-group>
         </template>
       </el-table-column>
     </el-table>
@@ -60,6 +68,9 @@
         </el-form-item>
         <el-form-item label="营业时间" prop="openTime">
           <el-time-picker v-model="formData.openTime" placeholder="选择时间" format="HH:mm" value-format="HH:mm" />
+        </el-form-item>
+        <el-form-item label="具体链接" prop="link">
+          <el-input v-model="formData.link" placeholder="请输入链接" clearable />
         </el-form-item>
         <el-form-item label="图片" prop="image">
           <el-upload method="post" list-type="picture-card" :limit="1" :auto-upload="false"
@@ -94,6 +105,9 @@
         </el-form-item>
         <el-form-item label="营业时间" prop="openTime">
           <el-time-picker v-model="formData2.openTime" placeholder="选择时间" format="HH:mm" value-format="HH:mm" />
+        </el-form-item>
+        <el-form-item label="具体链接" prop="link">
+          <el-input v-model="formData2.link" placeholder="请输入链接" clearable />
         </el-form-item>
         <el-form-item label="图片" prop="image">
           <el-upload method="post" list-type="picture-card" :limit="1" :auto-upload="false"
@@ -235,6 +249,7 @@ const formData = reactive({
   address: '',
   phone: '',
   openTime: '',
+  link: '',
   image: ''
 })
 const fileList = ref([]);
@@ -302,6 +317,7 @@ const formData2 = ref({
   address: '',
   phone: '',
   openTime: '',
+  link: '',
   image: ''
 })
 const showDialog2 = ref(false)
@@ -354,9 +370,10 @@ const uploadImage2 = async () => {
 // 修改表单
 const handleSubmit2 = async () => {
   try {
-    const imageUrl = await uploadImage2(); // 上传图片并获取 URL
-    formData2.value.image = imageUrl; // 将图片 URL 赋值给 formData.image
-
+    if (fileList2.value.length > 0) { // 检查 scenicId 是否存在
+      const imageUrl = await uploadImage2(); // 上传图片并获取 URL
+      formData2.value.image = imageUrl; // 将图片 URL 赋值给 formData.image
+    }
     const response = await axiosInstance.put('/admin/scenic_spots/update', formData2.value);
     if (response.data.code === 1) {
       ElMessage.success('修改成功');
@@ -372,4 +389,13 @@ const handleSubmit2 = async () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.multi-line-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;       /* 限制显示 3 行 */
+  -webkit-box-orient: vertical;
+}
+
+</style>

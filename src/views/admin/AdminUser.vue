@@ -86,6 +86,7 @@ const tableData = ref([])
 const total = ref(0)
 
 const handleStatusChange = async (userId,status) => {
+  alert(status)
   try {
     const response = await axiosInstance.post('/admin/users/status',
       { status: status, userId: userId },

@@ -20,6 +20,8 @@
         </el-form-item>
       </el-form>
     </div>
+    <el-button id="aa" @click="$router.push('/userLogin')">返回登录</el-button>
+    <img src="../../assets/首页.png" alt="首页" class="logo" id="home" @click="goToHome">
   </div>
 </template>
 
@@ -46,11 +48,11 @@ const handleRegister = async () => {
   try {
     // 发起post请求
     const response = await axiosInstance.post('/users/register', registerForm.value)
-    if(response.data.code === 1){
+    if (response.data.code === 1) {
       console.log('注册成功')
       ElMessage.success('注册成功')
       router.push('/userlogin')
-    }else{
+    } else {
       console.log('注册失败')
       ElMessage.error('注册失败')
     }
@@ -59,7 +61,11 @@ const handleRegister = async () => {
     ElMessage.error('注册失败')
   }
 };
-  
+
+// 跳转到主页
+const goToHome = () => {
+    router.push('/home');
+};
 </script>
 
 <style scoped>
@@ -86,5 +92,22 @@ const handleRegister = async () => {
   width: 350px;
   height: auto;
   border-radius: 15px;
+}
+
+#aa {
+  position: absolute;
+  background-color: #151814;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  top: 10px;
+  right: 10px;
+}
+
+#home {
+  position: absolute;
+  width: 30px;
+  right: 150px;
+  top: 10px;
 }
 </style>

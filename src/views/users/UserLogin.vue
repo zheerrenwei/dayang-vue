@@ -15,13 +15,15 @@
                 </el-form-item>
             </el-form>
         </div>
+        <el-button id="aa" @click="$router.push('/adminLogin')">切换到管理员</el-button>
+        <img src="../../assets/首页.png" alt="首页" class="logo" id="home" @click="goToHome">
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import {useUserStore} from '@/store/user'
+import { useUserStore } from '@/store/user'
 import axiosInstance from '@/utils/axiosInstance'
 import { ElMessage } from 'element-plus';
 //定义表单数据
@@ -34,23 +36,23 @@ const useStore = useUserStore();
 // 登录处理函数
 const handleLogin = async () => {
     try {
-       // 发起post请求
-       const response = await axiosInstance.post('/users/login', loginForm.value);
-       if(response.data.code === 1){
-        // 登录成功，存储用户信息到pinia
-        useStore.setUser(response.data.data);
-        // 跳转到用户信息更新页面
-        console.log('登录成功', response.data.data)
-        ElMessage.success('登录成功')
-        router.push('/user/update')
-       }else{
-        console.log('登录失败', response.data.msg)
+        // 发起post请求
+        const response = await axiosInstance.post('/users/login', loginForm.value);
+        if (response.data.code === 1) {
+            // 登录成功，存储用户信息到pinia
+            useStore.setUser(response.data.data);
+            // 跳转到用户信息更新页面
+            console.log('登录成功', response.data.data)
+            ElMessage.success('登录成功')
+            router.push('/user/update')
+        } else {
+            console.log('登录失败', response.data.msg)
+            ElMessage.error('登录失败')
+        }
+    } catch (error) {
+        console.error('请求错误：', error)
         ElMessage.error('登录失败')
-       }
-    }catch (error) {
-    console.error('请求错误：', error)
-    ElMessage.error('登录失败')
-  }
+    }
 };
 
 
@@ -63,6 +65,11 @@ const loginFormRef = ref(null);
 // 注册处理函数
 const handleRegister = () => {
     router.push('/userregister');
+};
+
+// 跳转到主页
+const goToHome = () => {
+    router.push('/home');
 };
 </script>
 
@@ -90,5 +97,22 @@ const handleRegister = () => {
     width: 350px;
     height: auto;
     border-radius: 15px;
+}
+
+#aa {
+    position: absolute;
+    background-color: #151814;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    top: 10px;
+    right: 10px;
+}
+
+#home {
+    position: absolute;
+    width: 30px;
+    right: 150px;
+    top: 10px; 
 }
 </style>

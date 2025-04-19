@@ -14,6 +14,8 @@
         </el-form-item>
       </el-form>
     </div>
+    <el-button id="aa" @click="$router.push('/userLogin')">切换到用户</el-button>
+    <img src="../../assets/首页.png" alt="首页" class="logo" id="home" @click="goToHome">
   </div>
 </template>
 
@@ -58,6 +60,11 @@ const handleLogin = async() => {
     ElMessage.error('登录失败')
   }
 };
+
+// 跳转到主页
+const goToHome = () => {
+    router.push('/home');
+};
 </script>
 
 <style scoped>
@@ -84,5 +91,22 @@ const handleLogin = async() => {
   width: 350px;
   height: auto;
   border-radius: 15px;
+}
+
+#aa {
+    position: absolute;
+    background-color: #151814;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    top: 10px;
+    right: 10px;
+}
+
+#home {
+    position: absolute;
+    width: 30px;
+    right: 150px;
+    top: 10px; 
 }
 </style>

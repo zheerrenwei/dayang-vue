@@ -27,7 +27,42 @@ const routes = [
     name: 'home',
     component: () => import('../views/HomeView.vue')
   },
-
+  // 景点
+  {
+    path: '/scenic',
+    name: 'scenic',
+    component: () => import('../views/ScenicView.vue')
+  },
+  // 门票
+  {
+    path: '/ticket',
+    name: 'ticket',
+    component: () => import('../views/TicketView.vue')
+  },
+  // 酒店
+  {
+    path: '/hotel',
+    name: 'hotel',
+    component: () => import('../views/HotelView.vue')
+  },
+  // 公告
+  {
+    path: '/announcement',
+    name: 'announcement',
+    component: () => import('../views/AnView.vue')
+  },
+  // 留言板
+  {
+    path: '/review',
+    name: 'review',
+    component: () => import('../views/ReviewView.vue')
+  },
+  // 关于我们
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('../views/AboutView.vue')
+  },
 
   //   管理员
   // 登录

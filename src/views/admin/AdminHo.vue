@@ -10,7 +10,13 @@
     </div>
     <el-table :data="tableData" border style="width: 100%;margin-bottom:20px;height:420px">
       <el-table-column prop="name" label="酒店名称" width="125" />
-      <el-table-column prop="description" label="酒店描述" width="130" />
+      <el-table-column prop="description" label="酒店描述" width="130">
+        <template #default="scope">
+          <el-tooltip :content="scope.row.description" placement="top">
+            <p class="multi-line-ellipsis">{{ scope.row.description }}</p>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column prop="address" label="地址" width="130" />
       <el-table-column prop="phone" label="电话号码" width="130" />
       <el-table-column prop="stars" label="酒店星级" width="130" />
@@ -32,10 +38,8 @@
       </el-table-column>
       <el-table-column label="操作">
         <template #default="{ row }">
-          <el-button style="color: white;" type="success" size="30px"
-            @click="handleEdit(row.hotelId)">编辑</el-button>
-          <el-button style="color: white;" type="danger" size="30px"
-            @click="handleDelete(row.hotelId)">删除</el-button>
+          <el-button style="color: white;" type="success" size="30px" @click="handleEdit(row.hotelId)">编辑</el-button>
+          <el-button style="color: white;" type="danger" size="30px" @click="handleDelete(row.hotelId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -278,6 +282,7 @@ const handleSubmit = async () => {
     if (response.data.code === 1) {
       ElMessage.success('添加成功');
       showDialog.value = false; // 关闭弹窗
+      formRef.value?.resetFields(); // 重置表单
       getData();                // 刷新数据
     } else {
       ElMessage.error(response.data.msg || '添加失败');
@@ -355,9 +360,10 @@ const uploadImage2 = async () => {
 // 修改表单
 const handleSubmit2 = async () => {
   try {
-    const imageUrl = await uploadImage2(); // 上传图片并获取 URL
-    formData2.value.image = imageUrl; // 将图片 URL 赋值给 formData.image
-
+    if (fileList2.value.length > 0) {
+      const imageUrl = await uploadImage2(); // 上传图片并获取 URL
+      formData2.value.image = imageUrl; // 将图片 URL 赋值给 formData.image
+    }
     const response = await axiosInstance.put('/admin/hotels/update', formData2.value);
     if (response.data.code === 1) {
       ElMessage.success('修改成功');
@@ -373,4 +379,12 @@ const handleSubmit2 = async () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.multi-line-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;       /* 限制显示 3 行 */
+  -webkit-box-orient: vertical;
+}
+</style>
