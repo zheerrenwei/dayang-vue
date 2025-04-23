@@ -62,6 +62,7 @@ import {  } from '@element-plus/icons-vue';
 
 const route = useRoute();
 const router = useRouter();
+const adminStore = useAdminStore(); // 使用管理员存储
 
 // 根据当前路由的 path 自动设置激活状态
 const activeIndex = ref('');
@@ -108,7 +109,6 @@ const goToHome = () => {
 };
 //登出账号
 const goToLogout = () => {
-    const adminStore = useAdminStore(); // 使用管理员存储
     adminStore.logout(); // 调用管理员的登出方法
     router.push('/home');
 }
@@ -116,7 +116,11 @@ const goToLogout = () => {
 
 // 跳转到管理员信息管理页面
 const goToAdmin = () => {
-    router.push('/admin/admin');
+    if(adminStore.adminId === 1){
+        router.push('/admin/admin');
+    }else{
+        alert('只有管理员可以进入该页面')
+    }
 };
 
 // 跳转到用户信息管理页面

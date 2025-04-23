@@ -50,7 +50,7 @@ const handleLogin = async() => {
       // 跳转到用户信息更新页面
       console.log('登录成功', response.data.data)
       ElMessage.success('登录成功')
-      router.push('/admin/admin')
+      router.push('/admin/user')
     }else{
       console.log('登录失败', response.data.msg)
       ElMessage.error('登录失败')
